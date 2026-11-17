@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - Resume Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 3px 12px #ddd;
+        }
+
+        button, .btn {
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .delete {
+            background: #dc2626;
+        }
+
+        .resume {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>Resume Builder</h2>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</header>
+
+<div class="container">
+
+    <h1>Welcome, <span th:text="${username}"></span>!</h1>
+
+    <p>Manage your professional resumes here.</p>
+
+    <a href="/resume/new" class="btn">+ Create New Resume</a>
+
+    <div class="card">
+        <h2>My Resumes</h2>
+
+        <div th:if="${#lists.isEmpty(resumes)}">
+            <p>No resumes created yet. Create your first resume!</p>
+        </div>
+
+        <div th:each="resume : ${resumes}" class="resume">
+
+            <div>
+                <h3 th:text="${resume.name}"></h3>
+                <p th:text="${resume.email}"></p>
+            </div>
+
+            <div>
+                <a th:href="@{/resume/{id}(id=${resume.id})}"
+                   class="btn">View</a>
+
+                <form th:action="@{/resume/{id}/delete(id=${resume.id})}"
+                      method="post" style="display:inline">
+
+                    <button type="submit" class="delete">Delete</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

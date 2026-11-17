@@ -1,0 +1,10 @@
+
+target/
+.idea/
+*.iml
+*.log
+.env
+.DS_Store
+```
+
+Do not ignore pom.xml, src, mvnw, mvnw.cmd or Dockerfile.

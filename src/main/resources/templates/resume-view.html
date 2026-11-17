@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resume Preview</title>
+    <a th:href="@{/resume/{id}/download(id=${resume.id})}">
+        <button>Download PDF</button>
+    </a>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            background: #e2e8f0;
+            font-family: Arial;
+            padding: 30px 15px;
+        }
+
+        .resume {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 45px;
+            border-radius: 8px;
+        }
+
+        h1 { color: #1e3a8a; }
+        h2 { color: #2563eb; border-bottom: 1px solid #ddd; }
+        .actions { max-width: 750px; margin: 20px auto; }
+    </style>
+</head>
+
+<body>
+
+<div class="resume">
+
+    <h1 th:text="${resume.name}"></h1>
+
+    <p th:text="${resume.email}"></p>
+    <p th:text="${resume.phone}"></p>
+
+    <h2>Skills</h2>
+    <p style="white-space:pre-line"
+       th:text="${resume.skills}"></p>
+
+    <h2>Education</h2>
+    <p style="white-space:pre-line"
+       th:text="${resume.education}"></p>
+
+    <h2>Experience</h2>
+    <p style="white-space:pre-line"
+       th:text="${resume.experience}"></p>
+
+</div>
+
+<div class="actions">
+    <a href="/dashboard">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

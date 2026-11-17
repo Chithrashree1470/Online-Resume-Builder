@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Resume</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f1f5f9;
+            padding: 30px 15px;
+        }
+
+        .container {
+            background: white;
+            max-width: 650px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Create Your Resume</h1>
+
+    <form th:action="@{/resume/save}"
+          th:object="${resume}" method="post">
+
+        <label>Full Name</label>
+        <input type="text" th:field="*{name}" required>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required>
+
+        <label>Phone Number</label>
+        <input type="tel" th:field="*{phone}" required>
+
+        <label>Skills</label>
+        <textarea th:field="*{skills}"
+                  placeholder="Java, Python, SQL, HTML..."></textarea>
+
+        <label>Education</label>
+        <textarea th:field="*{education}"
+                  placeholder="Degree, College, Year..."></textarea>
+
+        <label>Experience</label>
+        <textarea th:field="*{experience}"
+                  placeholder="Internship, projects, experience..."></textarea>
+
+        <button type="submit">Save Resume</button>
+
+    </form>
+
+    <br>
+    <a href="/dashboard">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,125 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Resume Preview | Resume Builder</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+          rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; }
-
-        /* Additional mobile responsiveness */
-
-        @media screen and (max-width: 600px) {
-
-            body {
-                overflow-x: hidden;
-            }
-
-            header {
-                padding: 15px 18px;
-                flex-wrap: wrap;
-                gap: 12px;
-            }
-
-            .container,
-            .page {
-                width: 100%;
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
-            h1 {
-                font-size: 27px;
-                line-height: 1.3;
-            }
-
-            h2 {
-                font-size: 21px;
-            }
-
-            input,
-            textarea,
-            select {
-                font-size: 16px;
-                max-width: 100%;
-            }
-
-            button,
-            .btn,
-            .create-btn {
-                max-width: 100%;
-            }
-
-            .form-card,
-            .box,
-            .card {
-                padding: 20px 16px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .resume {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .resume-actions {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .resume-actions a,
-            .resume-actions button {
-                flex: 1;
-            }
-
-            .actions {
-                flex-wrap: wrap;
-            }
-
-            textarea {
-                min-height: 110px;
-            }
-        }
-
-        @media screen and (max-width: 380px) {
-
-            .brand {
-                font-size: 20px;
-            }
-
-            .welcome {
-                padding: 20px;
-            }
-
-            .resume-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .resume-actions a,
-            .resume-actions form,
-            .resume-actions button {
-                width: 100%;
-            }
-        }
-
-        body {
+        .bullet-list {
             margin: 0;
-            padding: 35px 18px;
-            font-family: 'DM Sans', sans-serif;
-            background: #eef0f8;
-            color: #263247;
+            padding-left: 25px;
+            color: #4b5568;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .bullet-list li {
+            padding-left: 5px;
+            margin-bottom: 7px;
+            text-align: justify;
+            text-justify: inter-word;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            line-height: 1.8;
+        }
+
+        .summary-text {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.8;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+        /* Justify professional summary */
+        .summary-text {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.8;
+        }
+
+        /* One bullet for each entered line */
+        .bullet-list {
+            margin: 0;
+            padding-left: 22px;
+            color: #4b5568;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .bullet-list li {
+            padding-left: 3px;
+            margin-bottom: 5px;
+            text-align: justify;
+            text-justify: inter-word;
+            overflow-wrap: anywhere;
+        }
+
+        /* Reduce the gap between contact details and summary */
+        .resume-header {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+        }
+
+        /* Keep education and projects visually separated */
+        .education-table {
+            margin-bottom: 12px;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .bullet-list li {
+            padding-left: 3px;
+            margin-bottom: 5px;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+        .resume {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 50px;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .actions {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -132,11 +100,8 @@
             padding: 12px 19px;
             border-radius: 8px;
             text-decoration: none;
-            border: none;
-            font-family: inherit;
             font-size: 13px;
             font-weight: 700;
-            cursor: pointer;
         }
 
         .back {
@@ -146,62 +111,123 @@
         }
 
         .download {
-            background: linear-gradient(135deg, #5269e8, #7958d9);
+            background: #5269e8;
             color: white;
         }
 
         .resume {
-            max-width: 800px;
+            max-width: 850px;
             margin: auto;
             background: white;
-            padding: 55px 60px;
+            padding: 50px;
             border-radius: 12px;
-            box-shadow: 0 12px 40px rgba(34, 48, 90, 0.10);
+            box-shadow: 0 12px 40px rgba(34,48,90,0.10);
         }
 
         .resume-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
             border-bottom: 3px solid #5869e8;
             padding-bottom: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+        }
+
+        .header-info {
+            min-width: 0;
+            flex: 1;
         }
 
         h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 34px;
             color: #17213b;
-            margin: 0 0 14px;
+            margin: 0 0 12px;
             overflow-wrap: anywhere;
         }
 
         .contact {
             color: #667085;
-            font-size: 14px;
-            line-height: 1.8;
+            font-size: 13px;
+            line-height: 1.9;
             overflow-wrap: anywhere;
         }
 
+        .profile-photo {
+            width: 115px;
+            height: 135px;
+            object-fit: contain;
+            object-position: center;
+            border: 1px solid #e6eaff;
+            border-radius: 5px;
+            background: #fff;
+        }
+
+        .profile-link {
+            color: #5269e8;
+            text-decoration: underline;
+        }
+
         .section {
-            margin-bottom: 28px;
+            margin-bottom: 25px;
+            break-inside: avoid;
         }
 
         h2 {
             font-family: 'Outfit', sans-serif;
             color: #5269e8;
-            font-size: 17px;
+            font-size: 16px;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 1px solid #e5e9f2;
-            padding-bottom: 9px;
-            margin-bottom: 14px;
+            padding-bottom: 8px;
+            margin: 0 0 12px;
         }
 
         .section p {
             color: #4b5568;
             font-size: 14px;
-            line-height: 1.9;
+            line-height: 1.75;
             white-space: pre-line;
             overflow-wrap: anywhere;
             margin: 0;
+        }
+
+        .bullet-list {
+            margin: 0;
+            padding-left: 22px;
+            color: #4b5568;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .bullet-list li {
+            padding-left: 3px;
+            margin-bottom: 3px;
+            overflow-wrap: anywhere;
+        }
+
+        .education-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            color: #39465b;
+        }
+
+        .education-table th,
+        .education-table td {
+            border: 1px solid #dce2ec;
+            padding: 10px 9px;
+            text-align: left;
+            vertical-align: top;
+            overflow-wrap: anywhere;
+        }
+
+        .education-table th {
+            background: #edf0ff;
+            color: #3949a3;
+            font-weight: 700;
         }
 
         .empty-value {
@@ -210,29 +236,62 @@
         }
 
         @media(max-width: 600px) {
-            body { padding: 18px 10px; }
+            body {
+                padding: 18px 10px;
+            }
 
-            .resume { padding: 30px 23px; }
+            .resume {
+                padding: 25px 20px;
+            }
 
-            h1 { font-size: 27px; }
+            .resume-header {
+                align-items: flex-start;
+            }
 
-            .actions { flex-wrap: wrap; }
+            h1 {
+                font-size: 26px;
+            }
 
-            .btn { text-align: center; }
+            .profile-photo {
+                width: 85px;
+                height: 105px;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
         }
 
         @media print {
+            @page {
+                size: A4;
+                margin: 17.6mm;
+            }
+
             body {
                 background: white;
                 padding: 0;
             }
 
-            .actions { display: none; }
+            .actions {
+                display: none;
+            }
 
             .resume {
+                max-width: none;
+                padding: 0;
                 box-shadow: none;
                 border-radius: 0;
-                padding: 25px;
+            }
+
+            .section {
+                break-inside: avoid;
+            }
+
+            a {
+                color: #2456bd;
+                text-decoration: underline;
             }
         }
     </style>
@@ -246,6 +305,11 @@
         ← Back to Dashboard
     </a>
 
+    <a th:href="@{/resume/{id}/edit(id=${resume.id})}"
+       class="btn back">
+        Edit Resume
+    </a>
+
     <a th:href="@{/resume/{id}/download(id=${resume.id})}"
        class="btn download">
         Download PDF ↓
@@ -257,39 +321,171 @@
 
     <div class="resume-header">
 
-        <h1 th:text="${resume.name}"></h1>
+        <div class="header-info">
 
-        <div class="contact">
-            <div th:text="${resume.email}"></div>
-            <div th:text="${resume.phone}"></div>
+            <h1 th:text="${resume.name}"></h1>
+
+            <div class="contact">
+
+                <div th:if="${resume.email != null}"
+                     th:text="${resume.email}">
+                </div>
+
+                <div th:if="${resume.phone != null}"
+                     th:text="${(resume.countryCode != null ? resume.countryCode + ' ' : '') + resume.phone}">
+                </div>
+
+                <div th:if="${resume.address != null and !#strings.isEmpty(resume.address)}"
+                     th:text="${resume.address}">
+                </div>
+
+                <div th:if="${resume.linkedin != null and !#strings.isEmpty(resume.linkedin)}">
+                    <a class="profile-link"
+                       th:href="${resume.linkedin}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        LinkedIn
+                    </a>
+                </div>
+
+                <div th:if="${resume.github != null and !#strings.isEmpty(resume.github)}">
+                    <a class="profile-link"
+                       th:href="${resume.github}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        GitHub
+                    </a>
+                </div>
+
+            </div>
         </div>
+
+        <img th:if="${resume.profileImage != null and resume.profileImage.length > 0}"
+             th:src="@{/resume/{id}/photo(id=${resume.id})}"
+             class="profile-photo"
+             alt="Profile Photograph">
 
     </div>
 
+    <!-- PROFESSIONAL SUMMARY -->
+    <section class="section"
+             th:if="${resume.summary != null and !#strings.isEmpty(resume.summary)}">
+
+        <h2>Professional Summary</h2>
+
+        <p class="summary-text"
+           th:text="${resume.summary}">
+        </p>
+
+    </section>
+
+    <!-- EXPERIENCE LEVEL -->
     <section class="section">
+
+        <h2>Experience Level</h2>
+
+        <p th:if="${resume.experienceLevel != null and !#strings.isEmpty(resume.experienceLevel)}"
+           th:text="${resume.experienceLevel}">
+        </p>
+
+        <p th:if="${resume.experienceLevel == null or #strings.isEmpty(resume.experienceLevel)}"
+           class="empty-value">
+            Not provided.
+        </p>
+
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section"
+             th:if="${!#lists.isEmpty(skillsList)}">
+
         <h2>Skills</h2>
-        <p th:if="${resume.skills != null and !#strings.isEmpty(resume.skills)}"
-           th:text="${resume.skills}"></p>
-        <p th:if="${resume.skills == null or #strings.isEmpty(resume.skills)}"
-           class="empty-value">No skills added.</p>
+
+        <ul class="bullet-list">
+            <li th:each="item : ${skillsList}"
+                th:text="${item}">
+            </li>
+        </ul>
+
     </section>
 
+    <!-- EDUCATION -->
     <section class="section">
+
         <h2>Education</h2>
+
+        <table class="education-table">
+
+            <thead>
+            <tr>
+                <th>Level</th>
+                <th>Qualification / Institution</th>
+                <th>Year</th>
+                <th>Percentage / CGPA</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:if="${resume.schoolQualification != null or resume.schoolYear != null or resume.schoolPercentage != null}">
+                <td>School</td>
+                <td th:text="${resume.schoolQualification}"></td>
+                <td th:text="${resume.schoolYear}"></td>
+                <td th:text="${resume.schoolPercentage}"></td>
+            </tr>
+
+            <tr th:if="${resume.puQualification != null or resume.puYear != null or resume.puPercentage != null}">
+                <td>PU / Higher Secondary</td>
+                <td th:text="${resume.puQualification}"></td>
+                <td th:text="${resume.puYear}"></td>
+                <td th:text="${resume.puPercentage}"></td>
+            </tr>
+
+            <tr th:if="${resume.degreeQualification != null or resume.degreeYear != null or resume.degreePercentage != null}">
+                <td>Degree</td>
+                <td th:text="${resume.degreeQualification}"></td>
+                <td th:text="${resume.degreeYear}"></td>
+                <td th:text="${resume.degreePercentage}"></td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
         <p th:if="${resume.education != null and !#strings.isEmpty(resume.education)}"
-           th:text="${resume.education}"></p>
-        <p th:if="${resume.education == null or #strings.isEmpty(resume.education)}"
-           class="empty-value">No education details added.</p>
+           th:text="${resume.education}"
+           style="margin-top:10px">
+        </p>
+
     </section>
 
-    <section class="section">
+    <!-- PROJECTS -->
+    <section class="section"
+             th:if="${!#lists.isEmpty(projectsList)}">
+
         <h2>Projects</h2>
-        <p th:if="${resume.projects != null and !#strings.isEmpty(resume.projects)}"
-           th:text="${resume.projects}"></p>
-        <p th:if="${resume.projects == null or #strings.isEmpty(resume.projects)}"
-           class="empty-value">No projects details added.</p>
+
+        <ul class="bullet-list">
+            <li th:each="item : ${projectsList}"
+                th:text="${item}">
+            </li>
+        </ul>
+
     </section>
 
+    <!-- CERTIFICATIONS -->
+    <section class="section"
+             th:if="${!#lists.isEmpty(certificationsList)}">
+
+        <h2>Certifications</h2>
+
+        <ul class="bullet-list">
+            <li th:each="item : ${certificationsList}"
+                th:text="${item}">
+            </li>
+        </ul>
+
+    </section>
 </main>
 
 </body>

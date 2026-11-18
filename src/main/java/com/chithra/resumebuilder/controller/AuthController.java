@@ -4,10 +4,18 @@ package com.chithra.resumebuilder.controller;
 import com.chithra.resumebuilder.model.User;
 import com.chithra.resumebuilder.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 public class AuthController {
@@ -37,7 +45,7 @@ public class AuthController {
             @RequestParam String password,
             Model model) {
 
-        System.out.println("REGISTRATION REQUEST RECEIVED");
+        username = username.trim();
 
         if (username.isBlank() || password.length() < 8) {
             model.addAttribute("error",
@@ -51,13 +59,45 @@ public class AuthController {
         }
 
         User user = new User();
-        user.setUsername(username.trim());
+        user.setUsername(username);
         user.setPassword(encoder.encode(password));
 
         repository.saveAndFlush(user);
 
-        System.out.println("REGISTRATION SUCCESSFUL: " + username);
-
         return "redirect:/login?registered";
+    }
+
+    // Show password confirmation page.
+    @GetMapping("/logout/confirm")
+    public String confirmLogout() {
+        return "logout-confirm";
+    }
+
+    // Verify the current password before logging out.
+    @PostMapping("/logout/confirm")
+    public String logoutWithPassword(
+            @RequestParam String password,
+            Principal principal,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Model model) {
+
+        User user = repository.findByUsername(principal.getName())
+                .orElseThrow();
+
+        if (!encoder.matches(password, user.getPassword())) {
+            model.addAttribute("error",
+                    "Incorrect password. You are still logged in.");
+
+            return "logout-confirm";
+        }
+
+        new SecurityContextLogoutHandler().logout(
+                request,
+                response,
+                SecurityContextHolder.getContext().getAuthentication()
+        );
+
+        return "redirect:/";
     }
 }

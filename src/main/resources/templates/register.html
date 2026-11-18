@@ -3,41 +3,258 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Resume Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | Resume Builder</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Additional mobile responsiveness */
+
+        @media screen and (max-width: 600px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            header {
+                padding: 15px 18px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .container,
+            .page {
+                width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            h1 {
+                font-size: 27px;
+                line-height: 1.3;
+            }
+
+            h2 {
+                font-size: 21px;
+            }
+
+            input,
+            textarea,
+            select {
+                font-size: 16px;
+                max-width: 100%;
+            }
+
+            button,
+            .btn,
+            .create-btn {
+                max-width: 100%;
+            }
+
+            .form-card,
+            .box,
+            .card {
+                padding: 20px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resume {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .resume-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .resume-actions a,
+            .resume-actions button {
+                flex: 1;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+            }
+
+            textarea {
+                min-height: 110px;
+            }
+        }
+
+        @media screen and (max-width: 380px) {
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+
+            .resume-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .resume-actions a,
+            .resume-actions form,
+            .resume-actions button {
+                width: 100%;
+            }
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            text-align: center;
-            padding: 60px 15px;
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #eef0ff, #f8f9ff, #e9eaff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            color: #172033;
         }
 
         .box {
             background: white;
-            padding: 35px;
-            border-radius: 12px;
-            max-width: 400px;
-            margin: auto;
+            width: 100%;
+            max-width: 440px;
+            padding: 42px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(34, 48, 90, 0.12);
+            border: 1px solid #e8eaff;
         }
 
-        input, button {
+        .brand {
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #17213b;
+            margin-bottom: 30px;
+        }
+
+        .brand span { color: #5869e8; }
+
+        .icon {
+            width: 65px;
+            height: 65px;
+            background: #eceeff;
+            color: #5869e8;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            text-align: center;
+            font-size: 29px;
+            margin-bottom: 9px;
+        }
+
+        .subtitle {
+            color: #7b8498;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 18px 0 8px;
+            color: #344054;
+        }
+
+        input {
             width: 100%;
             padding: 14px;
-            margin: 10px 0;
-            box-sizing: border-box;
+            border: 1px solid #dce2ec;
+            border-radius: 9px;
+            background: #fbfcfe;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #5869e8;
+            box-shadow: 0 0 0 3px rgba(88, 105, 232, 0.12);
+        }
+
+        .hint {
+            color: #929daf;
+            font-size: 12px;
+            margin-top: 7px;
         }
 
         button {
-            background: #2563eb;
-            color: white;
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
             border: none;
-            border-radius: 6px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #5269e8, #7958d9);
+            color: white;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
+            transition: 0.2s;
         }
 
-        .error { color: red; }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(82, 105, 232, 0.25);
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .bottom {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #758098;
+        }
+
+        .bottom a {
+            color: #5869e8;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #7b8498;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        @media(max-width: 480px) {
+            .box { padding: 30px 23px; }
+        }
     </style>
 </head>
 
@@ -45,28 +262,51 @@
 
 <div class="box">
 
+    <div class="brand">Resume<span>Builder.</span></div>
+
+    <div class="icon">✦</div>
+
     <h1>Create Account</h1>
+
+    <p class="subtitle">
+        Join us and start creating your professional resume.
+    </p>
 
     <p class="error" th:if="${error}" th:text="${error}"></p>
 
     <form th:action="@{/register}" method="post">
 
+        <label for="username">Choose Username</label>
+
         <input type="text"
+               id="username"
                name="username"
-               placeholder="Username"
+               placeholder="Create a username"
+               autocomplete="username"
                required>
+
+        <label for="password">Create Password</label>
 
         <input type="password"
+               id="password"
                name="password"
-               placeholder="Password (minimum 8 characters)"
+               placeholder="Minimum 8 characters"
                minlength="8"
+               autocomplete="new-password"
                required>
 
-        <button type="submit">Register</button>
+        <p class="hint">Use at least 8 characters for your password.</p>
+
+        <button type="submit">Create My Account →</button>
 
     </form>
 
-    <a th:href="@{/login}">Already have an account? Login</a>
+    <div class="bottom">
+        Already have an account?
+        <a th:href="@{/login}">Login</a>
+    </div>
+
+    <a th:href="@{/}" class="home">← Back to Home</a>
 
 </div>
 

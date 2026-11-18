@@ -22,7 +22,7 @@ public class Resume {
     private String education;
 
     @Column(columnDefinition = "TEXT")
-    private String experience;
+    private String projects;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -72,12 +72,12 @@ public class Resume {
         this.education = education;
     }
 
-    public String getExperience() {
-        return experience;
+    public String getProjects() {
+        return projects;
     }
 
-    public void setExperience(String experience) {
-        this.experience = experience;
+    public void setProjects(String projects) {
+        this.projects = projects;
     }
 
     public User getUser() {

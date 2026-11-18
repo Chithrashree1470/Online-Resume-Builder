@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirm Logout | Resume Builder</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #eef0ff, #f8f9ff);
+            font-family: 'DM Sans', sans-serif;
+            color: #172033;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 38px;
+            border-radius: 18px;
+            box-shadow: 0 15px 45px rgba(34, 48, 90, 0.10);
+            text-align: center;
+        }
+
+        .brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .brand span { color: #5869e8; }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #7b8498;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 22px 0 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dce2ec;
+            border-radius: 9px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #5869e8;
+            box-shadow: 0 0 0 3px rgba(88, 105, 232, 0.12);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background: linear-gradient(135deg, #5269e8, #7958d9);
+            border: none;
+            border-radius: 9px;
+            color: white;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .cancel {
+            display: block;
+            margin-top: 20px;
+            color: #5869e8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .error {
+            color: #c62828;
+            background: #fff0f0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="brand">Resume<span>Builder.</span></div>
+
+    <h1>Confirm Logout</h1>
+
+    <p>Please enter your current password to securely log out.</p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form th:action="@{/logout/confirm}" method="post">
+
+        <label for="password">Current Password</label>
+
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Enter your password"
+               autocomplete="current-password"
+               required>
+
+        <button type="submit">Confirm & Logout</button>
+
+    </form>
+
+    <a th:href="@{/dashboard}" class="cancel">
+        Cancel and Return to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

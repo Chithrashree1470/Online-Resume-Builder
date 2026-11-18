@@ -1,48 +1,367 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder</title>
+    <title>Resume Builder | Build Your Future</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body {
+
+        /* Additional mobile responsiveness */
+
+        @media screen and (max-width: 600px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
+            header {
+                padding: 15px 18px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .container,
+            .page {
+                width: 100%;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            h1 {
+                font-size: 27px;
+                line-height: 1.3;
+            }
+
+            h2 {
+                font-size: 21px;
+            }
+
+            input,
+            textarea,
+            select {
+                font-size: 16px;
+                max-width: 100%;
+            }
+
+            button,
+            .btn,
+            .create-btn {
+                max-width: 100%;
+            }
+
+            .form-card,
+            .box,
+            .card {
+                padding: 20px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resume {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .resume-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .resume-actions a,
+            .resume-actions button {
+                flex: 1;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+            }
+
+            textarea {
+                min-height: 110px;
+            }
+        }
+
+        @media screen and (max-width: 380px) {
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+
+            .resume-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .resume-actions a,
+            .resume-actions form,
+            .resume-actions button {
+                width: 100%;
+            }
+        }
+
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f6ff;
+            color: #172033;
+            min-height: 100vh;
         }
 
         header {
-            background: #0f172a;
+            background: #101a31;
             color: white;
-            padding: 22px;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .container {
-            margin: 100px auto;
-            max-width: 650px;
+        .brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .brand span {
+            color: #8b9cff;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #a5b4fc;
+        }
+
+        .nav-btn {
+            background: #5269e8;
+            padding: 11px 20px;
+            border-radius: 8px;
+        }
+
+        .hero {
+            max-width: 1150px;
+            margin: 75px auto;
+            padding: 30px 25px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e8eaff;
+            color: #4659c8;
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
         }
 
         h1 {
-            color: #0f172a;
-            font-size: 38px;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(38px, 5vw, 58px);
+            line-height: 1.13;
+            color: #17213b;
+            margin-bottom: 22px;
         }
 
-        p {
-            color: #64748b;
-            font-size: 18px;
+        h1 span {
+            color: #5869e8;
         }
 
-        button {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
+        .description {
+            color: #667085;
             font-size: 17px;
-            cursor: pointer;
+            line-height: 1.8;
+            max-width: 550px;
+            margin-bottom: 30px;
+        }
+
+        .create-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #5269e8, #7958d9);
+            color: white;
+            text-decoration: none;
+            padding: 16px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(82, 105, 232, 0.25);
+            transition: 0.2s;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(82, 105, 232, 0.35);
+        }
+
+        .login-link {
+            display: inline-block;
+            margin-left: 20px;
+            color: #4659c8;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .preview-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 55px rgba(34, 48, 90, 0.12);
+            border: 1px solid #e8eaff;
+            transform: rotate(2deg);
+        }
+
+        .preview-top {
+            background: #17213b;
+            color: white;
+            padding: 25px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .preview-top h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 23px;
+        }
+
+        .preview-top p {
+            color: #cbd5e1;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        .preview-content {
+            padding: 22px 5px 5px;
+        }
+
+        .preview-content h3 {
+            color: #5269e8;
+            font-size: 13px;
+            margin: 15px 0 8px;
+        }
+
+        .line {
+            height: 7px;
+            background: #e9ecf5;
+            border-radius: 10px;
+            margin: 8px 0;
+        }
+
+        .short { width: 60%; }
+        .medium { width: 80%; }
+        .long { width: 100%; }
+
+        .features {
+            background: white;
+            padding: 45px 8%;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 29px;
+            margin-bottom: 12px;
+        }
+
+        .features > p {
+            color: #758098;
+            margin-bottom: 30px;
+        }
+
+        .feature-grid {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .feature {
+            background: #f7f8ff;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #e8eaff;
+        }
+
+        .feature h3 {
+            color: #3445ad;
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+
+        .feature p {
+            color: #758098;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        footer {
+            background: #101a31;
+            color: #aeb9ce;
+            text-align: center;
+            padding: 22px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 18px 5%;
+            }
+
+            nav {
+                gap: 12px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                margin: 35px auto;
+                gap: 35px;
+            }
+
+            .preview-card {
+                transform: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-link {
+                margin: 18px 0 0;
+            }
         }
     </style>
 </head>
@@ -50,16 +369,88 @@
 <body>
 
 <header>
-    <h2>Resume Builder</h2>
+    <div class="brand">Resume<span>Builder.</span></div>
+
+    <nav>
+        <a th:href="@{/login}">Login</a>
+        <a th:href="@{/register}" class="nav-btn">Get Started</a>
+    </nav>
 </header>
 
-<div class="container">
-    <h1>Build Your Professional Resume</h1>
+<main>
+    <section class="hero">
 
-    <p>Create, manage and download your resume easily.</p>
+        <div>
+            <div class="tag">YOUR CAREER STARTS HERE</div>
 
-    <button>Create My Resume</button>
-</div>
+            <h1>Build a Resume That <span>Opens Doors.</span></h1>
+
+            <p class="description">
+                Create a professional resume, organize your achievements
+                and download your resume as a PDF — all in one place.
+            </p>
+
+            <a th:href="@{/register}" class="create-btn">
+                Create My Resume →
+            </a>
+
+            <a th:href="@{/login}" class="login-link">
+                Already registered? Login
+            </a>
+        </div>
+
+        <div class="preview-card">
+            <div class="preview-top">
+                <h2>YOUR NAME</h2>
+                <p>Professional Resume</p>
+            </div>
+
+            <div class="preview-content">
+                <h3>CONTACT</h3>
+                <div class="line medium"></div>
+
+                <h3>SKILLS</h3>
+                <div class="line long"></div>
+                <div class="line medium"></div>
+
+                <h3>EDUCATION</h3>
+                <div class="line long"></div>
+                <div class="line short"></div>
+
+                <h3>EXPERIENCE</h3>
+                <div class="line long"></div>
+                <div class="line medium"></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="features">
+        <h2>Everything You Need</h2>
+        <p>A simple way to create and manage your professional resume.</p>
+
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Easy to Create</h3>
+                <p>Enter your personal, educational and professional details in one place.</p>
+            </div>
+
+            <div class="feature">
+                <h3>Manage Resumes</h3>
+                <p>Save your resumes and access them whenever you need.</p>
+            </div>
+
+            <div class="feature">
+                <h3>PDF Download</h3>
+                <p>Download your completed resume as a PDF document.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    © 2026 Resume Builder. Build your future with confidence.
+</footer>
 
 </body>
 </html>

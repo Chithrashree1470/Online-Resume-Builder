@@ -129,7 +129,7 @@ public class ResumeController {
         existing.setCertifications(formResume.getCertifications());
         existing.setExperienceLevel(formResume.getExperienceLevel());
 
-        existing.setEducation(formResume.getEducation());
+
 
         existing.setSchoolQualification(formResume.getSchoolQualification());
         existing.setSchoolYear(formResume.getSchoolYear());

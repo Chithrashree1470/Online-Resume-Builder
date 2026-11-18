@@ -42,8 +42,7 @@ public class Resume {
 
     private String experienceLevel;
 
-    @Column(columnDefinition = "TEXT")
-    private String education;
+
 
     private String schoolQualification;
     private String schoolYear;
@@ -107,8 +106,6 @@ public class Resume {
     public String getExperienceLevel() { return experienceLevel; }
     public void setExperienceLevel(String experienceLevel) { this.experienceLevel = experienceLevel; }
 
-    public String getEducation() { return education; }
-    public void setEducation(String education) { this.education = education; }
 
     public String getSchoolQualification() { return schoolQualification; }
     public void setSchoolQualification(String schoolQualification) { this.schoolQualification = schoolQualification; }

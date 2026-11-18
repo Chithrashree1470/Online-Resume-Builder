@@ -533,7 +533,7 @@ public class PdfService {
                     resume.getDegreeYear(),
                     resume.getDegreePercentage());
 
-            if (rows.isEmpty() && empty(resume.getEducation())) {
+            if (rows.isEmpty() ){
                 return;
             }
 
@@ -560,12 +560,6 @@ public class PdfService {
                 drawTableRow(row, widths, false);
             }
 
-            if (!empty(resume.getEducation())) {
-                y -= 7;
-                writeTextSection(
-                        "ADDITIONAL EDUCATION",
-                        resume.getEducation());
-            }
 
             // Match the modest gap in the HTML preview.
             y -= 12;

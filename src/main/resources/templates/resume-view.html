@@ -34,6 +34,7 @@
             white-space: pre-line;
             overflow-wrap: anywhere;
         }
+
         /* Justify professional summary */
         .summary-text {
             text-align: justify;
@@ -68,15 +69,18 @@
         .education-table {
             margin-bottom: 12px;
         }
+
         * {
             box-sizing: border-box;
         }
+
         .bullet-list li {
             padding-left: 3px;
             margin-bottom: 5px;
             white-space: pre-line;
             overflow-wrap: anywhere;
         }
+
         .resume {
             max-width: 850px;
             margin: auto;
@@ -452,11 +456,6 @@
 
         </table>
 
-        <p th:if="${resume.education != null and !#strings.isEmpty(resume.education)}"
-           th:text="${resume.education}"
-           style="margin-top:10px">
-        </p>
-
     </section>
 
     <!-- PROJECTS -->
@@ -486,6 +485,7 @@
         </ul>
 
     </section>
+
 </main>
 
 </body>

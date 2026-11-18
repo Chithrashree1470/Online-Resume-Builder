@@ -1,4 +1,3 @@
-
 package com.chithra.resumebuilder.controller;
 
 import com.chithra.resumebuilder.model.Resume;
@@ -29,18 +28,6 @@ public class ResumeController {
     private final ResumeRepository resumeRepository;
     private final UserRepository userRepository;
 
-    // Split textarea content at each Enter.
-    private List<String> splitLines(String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return List.of();
-        }
-
-        return Arrays.stream(value.split("\\R"))
-                .map(String::trim)
-                .filter(line -> !line.isEmpty())
-                .collect(Collectors.toList());
-    }
-
     public ResumeController(
             ResumeRepository resumeRepository,
             UserRepository userRepository,
@@ -51,14 +38,29 @@ public class ResumeController {
         this.pdfService = pdfService;
     }
 
+    // Split textarea content at each Enter.
+    private List<String> splitLines(String value) {
+
+        if (value == null || value.trim().isEmpty()) {
+            return List.of();
+        }
+
+        return Arrays.stream(value.split("\\R"))
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(Principal principal, Model model) {
 
         model.addAttribute("username", principal.getName());
 
-        model.addAttribute("resumes",
+        model.addAttribute(
+                "resumes",
                 resumeRepository.findByUserUsernameOrderByIdDesc(
-                        principal.getName()));
+                        principal.getName())
+        );
 
         return "dashboard";
     }
@@ -85,8 +87,10 @@ public class ResumeController {
                 .orElseThrow();
 
         resume.setUser(user);
+
         resumeRepository.save(resume);
 
+        // After creating a new resume, return to the dashboard.
         return "redirect:/dashboard";
     }
 
@@ -112,42 +116,52 @@ public class ResumeController {
             MultipartFile profilePhoto,
             Principal principal) throws IOException {
 
+        // Load the existing resume belonging to the logged-in user.
         Resume existing = findOwnedResume(id, principal);
 
+        // Update personal information.
         existing.setName(formResume.getName());
         existing.setAddress(formResume.getAddress());
         existing.setEmail(formResume.getEmail());
         existing.setCountryCode(formResume.getCountryCode());
         existing.setPhone(formResume.getPhone());
 
+        // Update profile links.
         existing.setLinkedin(formResume.getLinkedin());
         existing.setGithub(formResume.getGithub());
 
+        // Update professional details.
         existing.setSummary(formResume.getSummary());
         existing.setSkills(formResume.getSkills());
         existing.setProjects(formResume.getProjects());
         existing.setCertifications(formResume.getCertifications());
         existing.setExperienceLevel(formResume.getExperienceLevel());
 
-
-
-        existing.setSchoolQualification(formResume.getSchoolQualification());
+        // Update school details.
+        existing.setSchoolQualification(
+                formResume.getSchoolQualification()
+        );
         existing.setSchoolYear(formResume.getSchoolYear());
         existing.setSchoolPercentage(formResume.getSchoolPercentage());
 
+        // Update PU / Higher Secondary details.
         existing.setPuQualification(formResume.getPuQualification());
         existing.setPuYear(formResume.getPuYear());
         existing.setPuPercentage(formResume.getPuPercentage());
 
-        existing.setDegreeQualification(formResume.getDegreeQualification());
+        // Update degree details.
+        existing.setDegreeQualification(
+                formResume.getDegreeQualification()
+        );
         existing.setDegreeYear(formResume.getDegreeYear());
         existing.setDegreePercentage(formResume.getDegreePercentage());
 
-        // Keep the old photo if no new photo is selected.
+        // Keep the existing photo if no new photo is selected.
         validateAndSetPhoto(existing, profilePhoto);
 
         resumeRepository.save(existing);
 
+        // After editing, open the updated resume preview.
         return "redirect:/resume/" + id;
     }
 
@@ -161,16 +175,19 @@ public class ResumeController {
 
         if (photo.getSize() > MAX_PHOTO_SIZE) {
             throw new IllegalArgumentException(
-                    "Photo must be smaller than 10 MB.");
+                    "Photo must be smaller than 10 MB."
+            );
         }
 
         String contentType = photo.getContentType();
 
-        if (!MediaType.IMAGE_JPEG_VALUE.equalsIgnoreCase(contentType)
-                && !MediaType.IMAGE_PNG_VALUE.equalsIgnoreCase(contentType)) {
+        if (contentType == null
+                || (!MediaType.IMAGE_JPEG_VALUE.equalsIgnoreCase(contentType)
+                && !MediaType.IMAGE_PNG_VALUE.equalsIgnoreCase(contentType))) {
 
             throw new IllegalArgumentException(
-                    "Only JPG and PNG photographs are allowed.");
+                    "Only JPG and PNG photographs are allowed."
+            );
         }
 
         resume.setProfileImage(photo.getBytes());
@@ -188,14 +205,20 @@ public class ResumeController {
         model.addAttribute("resume", resume);
 
         // These lists create one bullet for each entered line.
-        model.addAttribute("skillsList",
-                splitLines(resume.getSkills()));
+        model.addAttribute(
+                "skillsList",
+                splitLines(resume.getSkills())
+        );
 
-        model.addAttribute("projectsList",
-                splitLines(resume.getProjects()));
+        model.addAttribute(
+                "projectsList",
+                splitLines(resume.getProjects())
+        );
 
-        model.addAttribute("certificationsList",
-                splitLines(resume.getCertifications()));
+        model.addAttribute(
+                "certificationsList",
+                splitLines(resume.getCertifications())
+        );
 
         return "resume-view";
     }
@@ -206,6 +229,7 @@ public class ResumeController {
             Principal principal) {
 
         Resume resume = findOwnedResume(id, principal);
+
         byte[] photo = resume.getProfileImage();
 
         if (photo == null || photo.length == 0) {
@@ -216,6 +240,7 @@ public class ResumeController {
 
         if (MediaType.IMAGE_PNG_VALUE.equalsIgnoreCase(
                 resume.getProfileImageContentType())) {
+
             type = MediaType.IMAGE_PNG;
         }
 
@@ -230,12 +255,15 @@ public class ResumeController {
             Principal principal) throws IOException {
 
         Resume resume = findOwnedResume(id, principal);
+
         byte[] pdf = pdfService.generatePdf(resume);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=resume.pdf")
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=resume.pdf"
+                )
                 .body(pdf);
     }
 
@@ -249,11 +277,13 @@ public class ResumeController {
         return "redirect:/dashboard";
     }
 
+    // Only allow users to access their own resumes.
     private Resume findOwnedResume(Long id, Principal principal) {
 
         return resumeRepository
                 .findByIdAndUserUsername(id, principal.getName())
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Resume not found"));
+                        new IllegalArgumentException("Resume not found")
+                );
     }
 }

@@ -329,9 +329,10 @@
             Start with your basic contact details.
         </p>
 
-        <form th:action="${editMode}
-                ? @{/resume/{id}/edit(id=${resume.id})}
-                : @{/resume/save}"
+        <form id="resumeForm"
+              th:action="${editMode}
+                  ? @{/resume/{id}/edit(id=${resume.id})}
+                  : @{/resume/save}"
               th:object="${resume}"
               method="post"
               enctype="multipart/form-data">
@@ -449,7 +450,7 @@
 
                 <textarea id="skills"
                           th:field="*{skills}"
-                          placeholder="Enter each skill on a new line.&#10;Java&#10;Python&#10;HTML&#10;CSS&#10;MySQL"></textarea>
+                          placeholder="Enter each skill on a new line. Java, Python, HTML, CSS, MySQL"></textarea>
 
                 <p class="field-hint">
                     Enter each skill on a separate line to display bullet points.
@@ -461,7 +462,7 @@
 
                 <textarea id="projects"
                           th:field="*{projects}"
-                          placeholder="Enter each project on a new line.&#10;Project name - Description"></textarea>
+                          placeholder="Enter each project on a new line. Project name - Description"></textarea>
 
                 <p class="field-hint">
                     Enter each project on a separate line.
@@ -578,14 +579,6 @@
                        placeholder="8.5 CGPA">
             </div>
 
-            <div class="form-group">
-                <label for="education">Additional Education Details</label>
-
-                <textarea id="education"
-                          th:field="*{education}"
-                          placeholder="Any additional academic details..."></textarea>
-            </div>
-
             <hr class="divider">
 
             <div class="actions">
@@ -609,6 +602,7 @@
 
     </div>
 
+    <!-- EXIT CONFIRMATION DIALOG -->
     <div id="exitDialog" class="exit-overlay" hidden>
         <div class="exit-box">
 
@@ -636,7 +630,7 @@
 </main>
 
 <script>
-    const resumeForm = document.querySelector('form');
+    const resumeForm = document.getElementById('resumeForm');
     const exitDialog = document.getElementById('exitDialog');
 
     function showExitDialog() {
